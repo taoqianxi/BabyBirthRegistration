@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/layui/font/dtreefont.css">
+    <link rel="stylesheet" href="layuiadmin/style/dtree.css">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">快捷方式</div>
+                <div class="layui-card-body" id="layui-card-body" style="height: 185px"></div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">待办事项 <i id="watting"></i></div>
+                <div class="layui-card-body" id="layui-card-body-msg" style="height: 185px">
+                    <table id="LAY-table-list" lay-filter="LAY-table-list"></table>
+                    <div id="msgMore" class="layui-col-md12 layui-hide" style="text-align: right;color: #1E9FFF;font-weight: bold;cursor: pointer"><a lay-href="home/msgList.html" lay-text="消息列表">更多</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-tab layui-tab-card" lay-filter="tabHome">
+            <ul class="layui-tab-title">
+                <li lay-id="coursewareResearch" class="layui-this">课件研发</li>
+                <li lay-id="coursewareDeve">课件研发反馈</li>
+                <li lay-id="preparation">备课情况</li>
+                <li lay-id="classwork">课堂作品</li>
+                <li lay-id="exampleAudit">小样审核</li>
+                <li lay-id="auditWork">作品审核</li>
+                <li lay-id="parentToteacher">家长评价老师</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show"></div>
+                <div class="layui-tab-item"></div>
+                <div class="layui-tab-item"></div>
+                <div class="layui-tab-item"></div>
+                <div class="layui-tab-item"></div>
+                <div class="layui-tab-item"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--kejian 研发-->
+<script type="text/html" id="coursewareResearch">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;font-weight: bold;">
+            <div class="layui-col-md12">
+                <table class="layui-table" style="text-align: center">
+                    <colgroup>
+                        <col width="200">
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td rowspan="2">新研发课件</td>
+                        <td>备课课件</td>
+                        <td>授课课件</td>
+                        <td>/</td>
+                    </tr>
+                    <tr>
+                        <td>{{d.preCount}}</td>
+                        <td>{{d.giveCount}}</td>
+                        <td>/</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">课件审核通过</td>
+                        <td>通过</td>
+                        <td>审核中</td>
+                        <td>不通过</td>
+                    </tr>
+                    <tr>
+                        <td>{{d.auditPassCount}}</td>
+                        <td>{{d.auditingCount}}</td>
+                        <td>{{d.auditBackCount}}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">课题完成</td>
+                        <td>新完成</td>
+                        <td>/</td>
+                        <td>/</td>
+                    </tr>
+                    <tr>
+                        <td>{{d.lessonCompleteCount}}</td>
+                        <td>/</td>
+                        <td>/</td>
+                    </tr>
+
+
+                    <tr>
+                        <td rowspan="2">发布课件</td>
+                        <td>可发布</td>
+                        <td>新发布</td>
+                        <td>/</td>
+                    </tr>
+                    <tr>
+                        <td>{{d.lessonWaitingPublish}}</td>
+                        <td>{{d.lessonPublishCount}}</td>
+                        <td>/</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--课件研发反馈-->
+<script type="text/html" id="coursewareDeve">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收到反馈数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.totalCommentCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">五星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.fiveStarCount}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">四星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.fourStarCount}}" readonly class="layui-input">
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">三星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.threeStarCount}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">二星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.twoStarCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">一星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.oneStarCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--备课情况-->
+<script type="text/html" id="preparation">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">已备课</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.prepareCompleteCount}}" readonly class="layui-input">
+                        </div>
+
+
+                        <label class="layui-form-label">未备课</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.prepareWaitCount}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">小样</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.xyTotalCount}}" readonly class="layui-input">
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">审核通过</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.xyAuditCompleteCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">审核中</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.xyAuditingCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">审核不通过</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.xyAuditBackCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--课堂作品-->
+<script type="text/html" id="classwork">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">应提交作品</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.shouldSubmitWorksCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">实际提交</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.actualSubmitWorksCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">优秀数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.excellentCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">良好数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.fineCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">一般数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.commonCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--小样审核-->
+<script type="text/html" id="exampleAudit">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">小样数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.totalCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">审核完成</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.completeCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">审核未完成</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.unfinishedCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">优秀</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.excellentCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">良好</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.fineCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">一般</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.commonCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--作品审核-->
+<script type="text/html" id="auditWork">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作品数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.totalCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">审核完成</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.completeCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">审核未完成</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.unfinishedCount}}" readonly class="layui-input">
+                        </div>
+                        <label class="layui-form-label">延时审核</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.delayCount}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--家长评价老师-->
+<script type="text/html" id="parentToteacher">
+    <div style="font-weight: bold;">
+        <div class="layui-row">
+            <div class="layui-col-md12" style="margin-top: 10px">
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="1">本周</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="2">最近7天</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="3">本月</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" value="4">最近30天</button>
+            </div>
+        </div>
+        <div class="layui-row" style="margin-top: 20px;">
+            <div class="layui-col-md12">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">评价数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.mustCommentNum}}" readonly class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">五星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.comment5Num}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">四星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.comment4Num}}" readonly class="layui-input">
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">三星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.comment3Num}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">二星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.comment2Num}}" readonly class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">一星评价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.comment1Num}}" readonly class="layui-input">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!--快捷方式-->
+<script type="text/html" id="layui-card-tpl">
+    <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+        <div carousel-item>
+            {{# layui.each(d.outerSphere, function(index, item){ }}
+            <ul class="layui-row layui-col-space10">
+                {{# layui.each(item.list, function(jindex, jitem){ }}
+                {{# if(jitem.id === 'addShortcut'){ }}
+                <li class="layui-col-xs3">
+                    <a layadmin-event="addShortcut">
+                        <i class="layui-icon {{jitem.icon}}"></i>
+                        <cite>{{jitem.name}}</cite>
+                    </a>
+                </li>
+                {{#}else{}}
+                <li class="layui-col-xs3">
+                    <a lay-href="{{jitem.url}}">
+                        <i class="layui-icon {{jitem.icon}}"></i>
+                        <cite>{{jitem.name}}</cite>
+                    </a>
+                </li>
+                {{#}}}
+
+                {{# }); }}
+            </ul>
+            {{# }); }}
+        </div>
+    </div>
+</script>
+<script src="layuiadmin/layui/layui.js?t=1"></script>
+
+<script>
+    var initShortcut,initCarousel;
+    layui.use(['index', 'api', 'carousel', 'dtree'], function () {
+
+        var $ = layui.$, carousel = layui.carousel, element = layui.element, device = layui.device();
+
+        initCarousel = {
+            success: function () {
+                initMsg()
+                $('.layadmin-carousel').each(function () {
+                    var othis = $(this);
+                    carousel.render({
+                        elem: this
+                        , width: '100%'
+                        , arrow: 'none'
+                        , interval: othis.data('interval')
+                        , autoplay: othis.data('autoplay') === true
+                        , trigger: (device.ios || device.android) ? 'click' : 'hover'
+                        , anim: othis.data('anim')
+                    });
+                });
+            }
+        }
+
+        //初始化快捷方式
+        // initShortcut = function (options) {
+        //     layui.admin.req({
+        //         url: layui.api.Index.listHomeShortcutMenuByUserId,
+        //         dataa: {},
+        //         success: function (data) {
+        //             var items = [{
+        //                 id: 'addShortcut',
+        //                 name: '<b style="color: red;">添加快捷菜单</b>',
+        //                 icon: 'layui-icon-add-1'
+        //             }].concat(data)
+        //             var outerSphere = getouterSphere(items)
+        //             layui.util.renderTplView({
+        //                 tarId: 'layui-card-body',
+        //                 tplId: 'layui-card-tpl',
+        //                 data: {outerSphere: outerSphere}
+        //             })
+        //             if(options && options.success){
+        //                 options.success()
+        //             }
+        //         }
+        //     });
+        // }
+
+        // initShortcut(initCarousel);
+
+        //默认加载第一个
+        var tabId = "coursewareResearch";
+        // var reqs = {
+        //     coursewareResearch: {url: layui.api.Index.getHomeCourseWareRsp, data: {day: ''}},
+        //     coursewareDeve: {url: layui.api.Index.getHomeLessonCommentRsp, data: {day: ''}},
+        //     preparation: {url: layui.api.Index.getHomePrepareRsp, data: {day: ''}},
+        //     classwork: {url: layui.api.Index.getHomeClassroomRsp, data: {day: ''}},
+        //     exampleAudit: {url: layui.api.Index.getHomeXyAuditRsp, data: {day: ''}},
+        //     auditWork: {url: layui.api.Index.getHomeWorksAuditRsp, data: {day: ''}},
+        //     parentToteacher: {url: layui.api.Index.getHomeCommentP2TRsp, data: {day: ''}}
+        // }
+
+        element.render('progress');
+        element.on('tab(tabHome)', function (data) {
+            tabId = this.getAttribute('lay-id')
+            loadingTabContent(tabId)
+        });
+
+        //加载选项卡的内容
+        function loadingTabContent(tabId) {
+            requestHomeData(tabId, function (data) {
+                layui.util.renderTplView({
+                    tplId: tabId, data: data, getHtml: function (html) {
+                        $(".layui-tab-item.layui-show").html(html)
+                        layui.form.render()
+                    }
+                })
+
+                //监听按钮事件
+                $(".layui-btn.layui-btn-normal.layui-btn-sm").on('click', function () {
+                    var that = this;
+                    $(".layui-tab.layui-tab-card").find('li').each(function (index, item) {
+                        if ($(item).hasClass('layui-this')) {
+                            var tid = $(item).attr('lay-id')
+                            reqs[tid].data.day = that.value
+                            console.log(reqs[tid].data)
+                            loadingTabContent(tid)
+                        }
+                    })
+                })
+
+                // console.log(reqs[tabId])
+
+            })
+        }
+
+        //请求后台数据
+        function requestHomeData(tabId, callback) {
+          /*  callback({data: ''})
+            reqs[tabId].data = {}
+*/
+           // layui.admin.req({
+           //      url: reqs[tabId].url,
+           //      data: reqs[tabId].data,
+           //      success: function (data) {
+           //          if (callback) {
+           //              callback(data)
+           //          }
+           //      }
+           //  });
+        }
+
+        //默认加载第一个选项卡的内容：
+        loadingTabContent(tabId)
+
+        function getouterSphere(data) {
+            var len = 1, divisor = 8;
+            if (data.length >= divisor) {
+                if (data.length % divisor != 0) {
+                    len = parseInt(data.length / divisor) + 1
+                } else {
+                    len = data.length / divisor
+                }
+            }
+
+            var outerSphere = []
+            var icons = ['layui-icon-console', 'layui-icon-chart', 'layui-icon-template-1', 'layui-icon-chat', 'layui-icon-find-fill', 'layui-icon-survey', 'layui-icon-user', 'layui-icon-set'];
+            for (var i = 1; i <= len; i++) {
+                var start = (i - 1) * divisor;
+                var end = i * divisor - 1;
+                var items = {list: []}
+                var icon = 0;
+                for (var d = 0; d < data.length; d++) {
+                    if (d >= start && d <= end) {
+                        if (!data[d].icon) {
+                            data[d].icon = icons[icon++]
+                        }
+                        items.list.push(data[d])
+                    }
+                }
+                outerSphere.push(items)
+            }
+            return outerSphere;
+        }
+
+        //初始化首页消息
+        function initMsg() {
+            var options = {
+                elem: '#LAY-table-list',
+                cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                cols: [[
+                    {field: 'msgTitle', title: '标题',width:'20%'},
+                    {field: 'msgText', title: '消息描述',width:'55%'},
+                    {
+                        field: 'subjectName', width:'25%',align: 'center', title: '创建时间', minWidth: 100, templet: function (d) {
+                            return layui.util.toDateString(d.msgCreateTime)
+                        }
+                    }
+                ]],
+                page: false,
+                done:function () {
+                    $('#msgMore').removeClass('layui-hide')
+                }
+            }
+
+            var tableName = layui.setter.tableName
+            var head = layui.data(tableName)._openx_head
+            if (head && head.userId) {
+                layui.admin.req({
+                    url: layui.api.Index.listUnReadMsgInfoOfUserForPage,
+                    data: {userId: head.userId, pagination: {pageNum: 1, pageSize: 4}},
+                    success: function (res) {
+                        if (res.data) {
+                            options.data = res.data;
+                            layui.table.render(options);
+                            $("#watting").html('【消息未读：' + res.count +"】")
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

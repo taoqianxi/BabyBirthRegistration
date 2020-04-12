@@ -1,0 +1,120 @@
+
+<script type="text/html" template>
+  <link rel="stylesheet" href="../../../layuiadmin/style/login.css?v={{ layui.admin.v }}-1" media="all">
+</script>
+
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+  <div class="layadmin-user-login-main">
+    <div class="layadmin-user-login-box layadmin-user-login-header">
+<!--    	<img src="layui/images/app_icon.png" width="230px" height="70px"/>-->
+      <h2 style="color:red;">幼儿园招生管理平台</h2>
+<!--      <p>Xiaowan political management platform</p>-->
+    </div>
+    <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+      <div class="layui-form-item">
+        <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+        <input type="text" name="phone" id="LAY-user-login-username" required="required" placeholder="管理员用户名" class="layui-input">
+      </div>
+      <div class="layui-form-item">
+        <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+        <input type="password" name="password" id="LAY-user-login-password" required="required" placeholder="登入密码" class="layui-input">
+      </div>
+      <div class="layui-form-item" id="LAY-captcha" style="margin-top: 20px;display: none;">
+        <div id="captcha"></div>
+        <div id="msg"></div>
+      </div>
+      <div class="layui-form-item">
+        <button class="layui-btn layui-btn-fluid" style="background-color:#ce2e1a;" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+      </div>
+      <div class="layui-trans layui-form-item layadmin-user-login-other">
+        <label>社交账号登入</label>
+        <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
+        <a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>
+        <a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-trans layadmin-user-login-footer">
+
+  </div>
+  <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+  <script src="../../../layuiadmin/layui/layui.js"></script>
+  <script type="application/javascript" src="/layuiadmin/modules/jquery-1.7.2.min.js"></script>
+<script>
+  // function jumpForgetPwd(){
+  //     location.hash = '/user/forget';
+  //     location.reload();
+  // }
+layui.use(['admin', 'form', 'user'], function(){
+  var $ = layui.$
+  ,setter = layui.setter
+  ,admin = layui.admin
+  ,form = layui.form
+  ,router = layui.router()
+  ,view=layui.view
+  ,search = router.search;
+  form.render();
+  var baseUrl=setter.baseUrl;
+  //提交
+  form.on('submit(LAY-user-login-submit)', function(obj){
+      if(!obj.field.phone){
+    	  return layer.msg("用户名不能为空")
+      }
+      if(!obj.field.password){
+			return layer.msg("登入密码不能为空")
+    	}
+      var pwd=obj.field.password;
+      obj.field['password']=pwd;
+      obj.field['org']='1'
+      admin.req({
+          url: baseUrl+'/user/loginTest.do'
+          ,data: obj.field
+          ,done: function(res){
+              //请求成功后，写入 access_token
+              // layui.data(setter.tableName, {
+              //     key: setter.request.tokenName
+              //     ,value: res.data.token
+              // });
+              // layui.data(setter.tableName, {
+              //     key: setter.request.userName
+              //     ,value: res.data.name
+              // });
+              // layui.data(setter.tableName, {
+              //     key: setter.request.userIcon
+              //     ,value: res.data.icon
+              // });
+              // layer.closeAll();
+              // $("#LAY-user-login-username").val();
+              // $("#LAY-user-login-password").val();
+              // console.log("1213131")
+              //登入成功的提示与跳转
+              // layer.msg('登入成功', {
+              //     offset: '15px'
+              //     ,icon: 1
+              //     ,time: 1000
+              // }, function(){
+              //   console.log("跳转")
+              //     location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/';
+              // });
+          }
+          ,success:function (res) {
+              // $("#captcha").empty();
+              // $("#msg").empty();
+              // $("#LAY-captcha").hide();
+              // layer.closeAll();
+          //登入成功的提示与跳转
+          layer.msg('登入成功', {
+            offset: '15px'
+            ,icon: 1
+            ,time: 1000
+          }, function(){
+            window.location.href=setter.views+"/list.html"
+          });
+          }
+      });
+  });
+
+});
+</script>
