@@ -1,10 +1,9 @@
 package com.registration.controller;
 
 import com.registration.common.vo.UserVo;
-import com.registration.service.impl.KUserService;
+import com.registration.service.KUserService;
 import com.registration.util.ResponseMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,12 +1,10 @@
-package com.registration.service.impl;
+package com.registration.service;
 
 
 import com.registration.common.vo.UserVo;
 import com.registration.dao.KUserDao;
 import com.registration.mode.KUser;
 import com.registration.util.MD5Util;
-import com.registration.util.ResponseMode;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

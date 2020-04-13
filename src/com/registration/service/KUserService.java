@@ -1,4 +1,4 @@
-package com.registration.service.impl;
+package com.registration.service;
 
 import com.registration.common.vo.UserVo;
 import com.registration.util.ResponseMode;

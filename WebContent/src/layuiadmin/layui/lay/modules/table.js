@@ -671,11 +671,11 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function (exports) 
                 }
             }
             //表格请求携带_openx_head 参数
-            var tokenName = layui.setter.request.tokenName;
-            if (tokenName) {
-                var tableName = layui.setter.tableName
-                data._openx_head = layui.data(tableName)._openx_head || {};
-            }
+            // var tokenName = layui.setter.request.tokenName;
+            // if (tokenName) {
+            //     var tableName = layui.setter.tableName
+            //     data._openx_head = layui.data(tableName)._openx_head || {};
+            // }
             //====源码新增部分结束====
             if (options.contentType && options.contentType.indexOf("application/json") == 0) { //提交 json 格式
                 data = JSON.stringify(data);

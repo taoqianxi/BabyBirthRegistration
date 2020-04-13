@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ResponseMode<T> implements Serializable {
     private T data;
     private Boolean success = true;
-    private Integer code = 200;
+    private Integer code = 0;
     private String message = "";
 
 
@@ -31,7 +31,7 @@ public class ResponseMode<T> implements Serializable {
 
     public static <T> ResponseMode<T> buildSuccessResponse(T data) {
         ResponseMode<T> responseMode = new ResponseMode<>();
-        responseMode.setCode(200);
+        responseMode.setCode(0);
         responseMode.setSuccess(true);
         responseMode.setData(data);
         return responseMode;
