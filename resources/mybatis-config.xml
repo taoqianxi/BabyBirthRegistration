@@ -20,6 +20,7 @@
         <setting name="aggressiveLazyLoading" value="true"/>
         <!-- 打印查询语句 -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
+        <setting name="useActualParamName" value="false"/>
 <!--        <setting name="logImpl" value="LOG4J" />-->
     </settings>
     <!--分页插件拦截器配置-->
