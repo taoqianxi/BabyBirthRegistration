@@ -5,10 +5,19 @@
     <select id="listKapply" resultType="com.registration.mode.KApply">
         select *
         from `k_apply`
+        where student_name like concat('%',#{studentName},'%')
+        <if test="auditStatus != null">
+           and audit_status = #{auditStatus}
+        </if>
+        limit #{pagination.pageNum},#{pagination.pageSize}
     </select>
 
     <select id="listKapplyCount" resultType="int" >
         select count(*)
         from `k_apply`
+        where student_name like concat('%',#{studentName},'%')
+        <if test="auditStatus != null">
+            and audit_status = #{auditStatus}
+        </if>
     </select>
 </mapper>

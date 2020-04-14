@@ -1,5 +1,6 @@
 package com.registration.service;
 
+import com.registration.common.vo.ApplyVo;
 import com.registration.dao.KApplyDao;
 import com.registration.mode.KApply;
 import com.registration.util.PageMode;
@@ -14,7 +15,7 @@ public class KApplyServiceImpl implements KApplyService{
     private KApplyDao kApplyDao;
 
     @Override
-    public PageMode<List<KApply>> selectKapply() throws Exception {
-        return new PageMode<>(kApplyDao.listKapply(),kApplyDao.listKapplyCount());
+    public PageMode<List<KApply>> selectKapply(ApplyVo applyVo) throws Exception {
+        return new PageMode<>(kApplyDao.listKapply(applyVo),kApplyDao.listKapplyCount(applyVo));
     }
 }
