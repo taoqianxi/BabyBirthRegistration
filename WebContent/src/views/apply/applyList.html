@@ -125,10 +125,14 @@
 
         //处理审核逻辑
         function aud(index){
-            alert(this.objId)
-            alert(index)
-
-
+            $.post(baseUrl + "/apply/auditStatus.do",{bussId:this.objId,auditStatus: index},function (data) {
+                table.reload('table1',{
+                    where:{studentName: $("#studentName").val(),auditStatus: $("#auditStatus").val()}
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                })
+            })
         }
 
     })

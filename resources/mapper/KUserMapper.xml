@@ -6,4 +6,16 @@
         SELECT * FROM `k_user` WHERE `type` = #{type} AND account = #{account} AND `password`= #{password}
     </select>
 
+    <insert id="register">
+        INSERT INTO `k_user`(account,`password`,`phone`,`sex`,`type`)
+        VALUES(#{user.account},#{user.password},#{user.phone},#{user.sex},#{user.type})
+    </insert>
+
+    <select id="oneUser" resultType="com.registration.mode.KUser">
+        SELECT * FROM `k_user` WHERE `type` = 2 AND account = #{account}
+    </select>
+
+    <update id="updatePassWork">
+        UPDATE `k_user` SET `password`= #{password} WHERE id = #{id}
+    </update>
 </mapper>

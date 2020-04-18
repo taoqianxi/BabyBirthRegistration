@@ -9,20 +9,19 @@ import com.registration.util.ResponseMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("apply")
 @RestController
+@RequestMapping("apply")
 public class KApplyController {
 
     @Autowired
     private KApplyService kApplyService;
 
     @RequestMapping("list.do")
-    ResponseMode<PageMode<List<KApply>>> list(@RequestBody ApplyVo applyVo){
+    public ResponseMode<PageMode<List<KApply>>> list(@RequestBody ApplyVo applyVo){
         try {
             return ResponseMode.buildSuccessResponse(kApplyService.selectKapply(applyVo));
         } catch (Exception e) {
@@ -30,4 +29,24 @@ public class KApplyController {
             return ResponseMode.buildErrorResponse(e.getMessage());
         }
     }
-}
+
+    @RequestMapping("auditStatus.do")
+    public ResponseMode<Boolean> auditStatus(ApplyVo applyVo){
+        try {
+            return ResponseMode.buildSuccessResponse(kApplyService.auditStatus(applyVo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseMode.buildErrorResponse(e.getMessage());
+        }
+    }
+
+    @RequestMapping("insertApply.do")
+    public ResponseMode<Boolean> insertApply(@RequestBody KApply kApply) {
+        try {
+            return ResponseMode.buildSuccessResponse(kApplyService.insertApply(kApply));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseMode.buildErrorResponse(e.getMessage());
+        }
+    }
+ }

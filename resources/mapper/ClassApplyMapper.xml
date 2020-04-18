@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.registration.dao.ClassApplyDao">
+
+    <select id="listKApplyAll" resultType="com.registration.mode.KApply">
+        SELECT *
+        FROM `k_apply`
+        WHERE audit_status = 1
+        AND id NOT IN (SELECT apply FROM `class_apply` WHERE `is_del` = 0 GROUP BY apply)
+    </select>
+
+    <select id="listKApplyByClassId" resultType="com.registration.mode.KApply">
+        SELECT distinct *
+        FROM `k_apply` a
+        JOIN `class_apply` ca ON ca.`apply` = a.`id`
+        WHERE ca.`class_id` = #{classId}
+    </select>
+
+    <insert id="insertClassApply">
+        INSERT INTO `class_apply`(apply,class_id) VALUES
+        <foreach collection="list" open="(" close=")" separator="," item="dto">
+            #{dto.value},#{classId}
+        </foreach>
+    </insert>
+
+    <delete id="deleteClassApply">
+        DELETE FROM `class_apply` WHERE class_id = #{classId}
+    </delete>
+
+    <select id="listDivideIntoClasses" resultType="com.registration.common.dto.DivideIntoClassesDto">
+        SELECT a.`student_name`,c.`class_name`,c.`grade`,c.`teacher_name`
+        FROM `k_class` c
+        JOIN `class_apply` ca ON c.`id` = ca.`class_id`
+        JOIN `k_apply` a ON a.`id` = ca.`apply`
+        WHERE a.`user_id` = #{userId}
+    </select>
+</mapper>

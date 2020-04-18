@@ -29,7 +29,7 @@ layui.define(['api'], function (exports) {
                 if (errorJSON && (errorJSON.code === '060010' || (errorJSON.code && errorJSON.code.startsWith("020000")))) {
                     layer.confirm('您还未进行登录，是否去登录？', function () {
                         layer.closeAll();
-                        top.location.href = '../../pages/home/login.html';
+                        top.location.href = '../../pages/user/login.html';
                     })
                 } else {
                     var tips = errorJSON.message ? errorJSON.message : "系统错误，请联系管理员"
@@ -53,14 +53,14 @@ layui.define(['api'], function (exports) {
             done: function (res) { //这里要说明一下：done 是只有 response 的 code 正常才会执行。而 succese 则是只要 http 为 200 就会执行
                 console.log("退出去", res)
                 admin.exit(function () {
-                    location.href = 'home/login.html';
+                    location.href = 'user/login.html';
                 });
             }
         });
 
         //清除本地的token信息
         admin.exit(function () {
-            location.href = 'home/login.html';
+            location.href = 'user/login.html';
         });
     };
 

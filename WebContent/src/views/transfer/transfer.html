@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+    <script src="../../layuiadmin/layui/layui.js"></script>
+    <script src="../../layuiadmin/modules/jquery-1.11.0.js"></script>
+    <script src="../../url.js"></script>
+</head>
+<body>
+<div id="test7" class="demo-transfer"></div>
+
+<center>
+    <button type="button" id="butA" class="layui-btn layui-btn-normal" lay-demotransferactive="getData" >保存</button>
+</center>
+</body>
+<script>
+    layui.use(['transfer','jquery','table','layer', 'util'], function () {
+        var transfer = layui.transfer;
+        var util = layui.util;
+        let classId = layui.util.parseQueryString('classId')
+        $.post(baseUrl+"/class/inTheClass.do",{id:classId},function (re) {
+            var reData = re.data;
+            console.log(reData)
+            //学员入班
+            layui.transfer.render({
+                elem: '#test7'
+                ,data: reData.applyList
+                ,id: 't1' //定义唯一索引
+                ,value:reData.idList
+                ,title:["可分班学生","在班学生"]
+            })
+        })
+
+
+        $("#butA").on("click",function () {
+            var getData = transfer.getData('t1'); //获取右侧数据
+            $.post(baseUrl+"/class/insertClassApply.do",{inTheClassDtoList:JSON.stringify(getData),classId:classId},function (data) {
+                layer.msg("保存成功！")
+            },"json")
+
+        })
+    })
+</script>
+</html>

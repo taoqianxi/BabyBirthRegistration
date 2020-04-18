@@ -29,7 +29,7 @@ layui.define(['api'], function (exports) {
                 if (errorJSON && (errorJSON.code === '060010' || (errorJSON.code && errorJSON.code.startsWith("020000")))) {
                     layer.confirm('鎮ㄨ繕鏈繘琛岀櫥褰曪紝鏄惁鍘荤櫥褰曪紵', function () {
                         layer.closeAll();
-                        top.location.href = '../../pages/home/login.html';
+                        top.location.href = '../../pages/user/login.html';
                     })
                 } else {
                     var tips = errorJSON.message ? errorJSON.message : "绯荤粺閿欒锛岃鑱旂郴绠＄悊鍛�"
@@ -53,14 +53,14 @@ layui.define(['api'], function (exports) {
             done: function (res) { //杩欓噷瑕佽鏄庝竴涓嬶細done 鏄彧鏈� response 鐨� code 姝ｅ父鎵嶄細鎵ц銆傝€� succese 鍒欐槸鍙 http 涓� 200 灏变細鎵ц
                 console.log("閫€鍑哄幓", res)
                 admin.exit(function () {
-                    location.href = 'home/login.html';
+                    location.href = 'user/login.html';
                 });
             }
         });
 
         //娓呴櫎鏈湴鐨則oken淇℃伅
         admin.exit(function () {
-            location.href = 'home/login.html';
+            location.href = 'user/login.html';
         });
     };
 

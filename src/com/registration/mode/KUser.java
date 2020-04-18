@@ -10,7 +10,7 @@ public class KUser {
   private String password;
   private String phone;
   private Long sex;
-  private Long type;
+  private Integer type;
   private Date createTime;
   private Date updateTime;
 
@@ -55,11 +55,11 @@ public class KUser {
     this.sex = sex;
   }
 
-  public Long getType() {
+  public Integer getType() {
     return type;
   }
 
-  public void setType(Long type) {
+  public void setType(Integer type) {
     this.type = type;
   }
 

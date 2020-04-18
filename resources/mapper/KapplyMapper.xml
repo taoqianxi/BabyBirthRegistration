@@ -5,9 +5,16 @@
     <select id="listKapply" resultType="com.registration.mode.KApply">
         select *
         from `k_apply`
-        where student_name like concat('%',#{studentName},'%')
+        where 1 = 1
+        <if test="studentName != null">
+            and student_name like concat('%',#{studentName},'%')
+        </if>
         <if test="auditStatus != null">
            and audit_status = #{auditStatus}
+        </if>
+
+        <if test="userId != null">
+            and user_id = #{userId}
         </if>
         limit #{pagination.pageNum},#{pagination.pageSize}
     </select>
@@ -15,9 +22,25 @@
     <select id="listKapplyCount" resultType="int" >
         select count(*)
         from `k_apply`
-        where student_name like concat('%',#{studentName},'%')
+        where 1 = 1
+        <if test="studentName != null">
+            and student_name like concat('%',#{studentName},'%')
+        </if>
         <if test="auditStatus != null">
             and audit_status = #{auditStatus}
         </if>
+
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
     </select>
+
+    <update id="auditStatus">
+        UPDATE `k_apply` SET audit_status = #{auditStatus} WHERE id = #{bussId}
+    </update>
+
+    <insert id="insertApply" >
+        INSERT INTO `k_apply`(`user_id`,`student_name`,`date_of_birth`,`patriarch`,`relation`,`phone`,`sex`)
+        VALUES(#{userId},#{studentName},#{dateOfBirth},#{patriarch},#{relation},#{phone},#{sex})
+    </insert>
 </mapper>

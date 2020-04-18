@@ -122,8 +122,17 @@
 
     layui.use(['index','api'], function () {
         var $ = layui.$;
-        var da = JSON.parse("[{\"id\":\"1\",\"type\":\"2\",\"name\":\"学员报名审核\",\"url\":\"apply/applyList.html\",\"sort\":\"1\",\"descr\":\"\",\"child\":\"\"}]")
-        var html = initMenu(da);
+        var menu = "";
+        $.ajax({
+            url:'../json/menu.json',
+            async: false,
+            success: function (data) {
+                menu = data;
+            }
+        })
+        // console.log(menu)
+        // var da = JSON.parse("[{\"id\":\"1\",\"type\":\"2\",\"name\":\"学员报名审核\",\"url\":\"apply/applyList.html\",\"sort\":\"1\",\"descr\":\"\",\"child\":\"\"}]")
+        var html = initMenu(menu);
         $("#LAY-system-side-menu").html(html)
         layui.element.render()
 

@@ -10,4 +10,9 @@ public interface KApplyDao {
     List<KApply> listKapply(ApplyVo applyVo);
 
     int listKapplyCount(ApplyVo applyVo);
+
+    boolean auditStatus(ApplyVo applyVo);
+
+
+    Boolean insertApply(KApply kApply);
 }

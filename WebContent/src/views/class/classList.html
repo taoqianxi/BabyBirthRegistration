@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>班级管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+    <script src="../../layuiadmin/layui/layui.js"></script>
+    <script src="../../layuiadmin/modules/jquery-1.11.0.js"></script>
+    <script src="../../url.js"></script>
+</head>
+<body>
+
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级名称</label>
+        <div class="layui-input-inline">
+            <input type="text" id="className" name="title" style="width: 200px" autocomplete="off" placeholder="请输入名称" class="layui-input">
+        </div>
+
+        <label class="layui-form-label">年级</label>
+        <div class="layui-input-inline">
+            <select id="grade" name="interest" lay-filter="aihao">
+                <option value="">请选择</option>
+                <option value="小班">小班</option>
+                <option value="中班">中班</option>
+                <option value="大班">大班</option>
+            </select>
+        </div>
+    </div>
+</form>
+<div>
+<button type="button" id="butAdd" style="margin-left: 70px" class="layui-btn layui-btn-normal">新增</button>
+<button type="button" id="but1" style="margin-left: 650px" class="layui-btn layui-btn-normal">查询</button>
+</div>
+<table class="layui-hide" id="table1"></table>
+
+
+
+
+<script>
+
+    layui.use(['transfer','jquery','table','layer', 'util'], function () {
+        var table = layui.table;
+        var $ = layui.$ //重点处
+        let transfer = layui.transfer
+        let util = layui.util;
+
+        //表格操作
+        table.render({
+            elem: '#table1'
+            ,url: baseUrl + "/class/selectClass.do"
+            ,type:'post'
+            ,where: {className: $("#className").val(),grade: $("#grade").val()}
+            ,contentType:'application/json'
+            ,parseData: function (res) {
+                console.log(table)
+                return {
+                    "code": res.code,
+                    "count": res.data.count,
+                    "data": res.data.data
+                }
+            }
+            ,cols: [[
+                {field:'className', width:"20%", title: '班级名称', sort: true, align:'center'}
+                ,{field:'teacherName', width:"20%", title: '上课老师', align:'center'}
+                ,{field:'classRoom', width:"20%", title: '上课教室', sort: true, align:'center'}
+                ,{field:'grade', width:"20%", title: '年级', align:'center'}
+                ,{width:"20%", title: '操作', align:'center',templet: function (data) {
+                   return "<button type=\"button\" onclick='inTheClass("+data.id+")' class=\"layui-btn layui-btn-normal layui-btn-radius layui-btn-sm\">学生入班</button>" +
+                          "<button grade=\"button\" onclick='updateClass("+data.id+")' class=\"layui-btn layui-btn-warm layui-btn-radius layui-btn-sm\">编辑</button>" +
+                          "<button grade=\"button\" onclick='delClass("+data.id+")' class=\"layui-btn layui-btn-danger  layui-btn-radius layui-btn-sm\">删除</button>";
+                 }
+                }
+            ]]
+            ,page: true
+        });
+
+        //查询
+        $("#but1").on("click",function () {
+            table.reload('table1',{
+                where:{className: $("#className").val(),grade: $("#grade").val()}
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            })
+        })
+
+        //新增班级
+        $("#butAdd").on("click",function () {
+            layer.open({
+                 type: 2
+                ,title: '新增班级'
+                ,content: 'classAdd.html'
+                ,area: ['300px', '400px']
+                ,btn: ['确定', '取消']
+                ,yes: function(index, layero){
+
+                    //获取到表单元素
+                    var othis = layero.find('iframe').contents().find("#form1")
+                    let className= othis.find('input[name="className"]').val()
+                    let teacherName= othis.find('input[name="teacherName"]').val()
+                    let classRoom= othis.find('input[name="classRoom"]').val()
+                    let grade= othis.find('select[name="interest"]').val()
+                    if (className =="" || teacherName =="" || classRoom =="" || grade =="") {
+                        layer.msg("信息都是必填")
+                    } else {
+                        $.post(baseUrl+"class/insertClass.do",{className:className,teacherName:teacherName,classRoom:classRoom,grade:grade},function (data) {
+                            if (data.success) {
+                                layer.msg("创建成功！")
+                                layer.close(index)
+                                table.reload('table1',{
+                                    where:{className: $("#className").val(),grade: $("#grade").val()}
+                                    ,page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                })
+                            } else {
+                                layer.msg(data.message)
+                            }
+                        })
+
+                    }
+
+                }
+                ,success: function(layero, index){
+
+                }
+            });
+        })
+
+
+    })
+    //删除班级
+    function delClass(id) {
+        layer.confirm("确定要删除吗？",{btn: ['确定', '取消'],title:"提示"},function () {
+            $.get(baseUrl+"class/deleteClass.do",{id:id},function (data) {
+                layer.msg("删除成功！")
+                layui.table.reload('table1',{
+                    where:{className: $("#className").val(),grade: $("#grade").val()}
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                })
+            })
+        })
+    }
+    //编辑班级
+    function updateClass(id) {
+        $.get(baseUrl+"class/oneClass.do",{id:id},function (data) {
+            let result = data.data;
+            layer.open({
+                type: 2
+                ,title: '编辑班级'
+                ,content: 'classAdd.html?className='+result.className+'&teacherName=' + result.teacherName + '&classRoom=' + result.classRoom + '&grade='+result.grade
+                ,area: ['300px', '400px']
+                ,btn: ['确定', '取消']
+                ,yes: function(index, layero){
+
+                    //获取到表单元素
+                    var othis = layero.find('iframe').contents().find("#form1")
+                    let className= othis.find('input[name="className"]').val()
+                    let teacherName= othis.find('input[name="teacherName"]').val()
+                    let classRoom= othis.find('input[name="classRoom"]').val()
+                    let grade= othis.find('select[name="interest"]').val()
+                    if (className =="" || teacherName =="" || classRoom =="" || grade =="") {
+                        layer.msg("信息都是必填")
+                    } else {
+                        $.post(baseUrl+"class/insertClass.do",{id:id,className:className,teacherName:teacherName,classRoom:classRoom,grade:grade},function (data) {
+                            if (data.success) {
+                                layer.msg("修改成功！")
+                                layer.close(index)
+                                layui.table.reload('table1',{
+                                    where:{className: $("#className").val(),grade: $("#grade").val()}
+                                    ,page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                })
+                            } else {
+                                layer.msg(data.message)
+                            }
+                        })
+
+                    }
+
+                }
+                ,success: function(layero, index){
+
+                }
+            });
+        })
+    }
+
+    //学生入班
+    function inTheClass(id) {
+
+        layer.open({
+            type: 2
+            ,title: '新增班级'
+            ,content: "../transfer/transfer.html?classId="+id
+            ,area: ['500px', '470px']
+            ,yes: function(index, layero){
+                //获取到表单元素
+                var othis = layero.find('iframe').contents().find("#form1")
+                let className= othis.find('input[name="className"]').val()
+                let teacherName= othis.find('input[name="teacherName"]').val()
+                let classRoom= othis.find('input[name="classRoom"]').val()
+                let grade= othis.find('select[name="interest"]').val()
+                if (className =="" || teacherName =="" || classRoom =="" || grade =="") {
+                    layer.msg("信息都是必填")
+                } else {
+                    $.post(baseUrl+"class/insertClass.do",{className:className,teacherName:teacherName,classRoom:classRoom,grade:grade},function (data) {
+                        if (data.success) {
+                            layer.msg("创建成功！")
+                            layer.close(index)
+                            table.reload('table1',{
+                                where:{className: $("#className").val(),grade: $("#grade").val()}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            })
+                        } else {
+                            layer.msg(data.message)
+                        }
+                    })
+
+                }
+
+            }
+            ,success: function(layero, index){
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

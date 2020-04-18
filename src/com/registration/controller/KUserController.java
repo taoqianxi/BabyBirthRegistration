@@ -1,9 +1,12 @@
 package com.registration.controller;
 
+import com.registration.common.vo.RegisterVo;
 import com.registration.common.vo.UserVo;
+import com.registration.mode.KUser;
 import com.registration.service.KUserService;
 import com.registration.util.ResponseMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,5 +44,36 @@ public class KUserController {
         }
     }
 
+    /**
+     *  家长登录
+     */
+    @RequestMapping("patriarchLogin.do")
+    public ResponseMode<Map<String,Object>> patriarchLogin(@RequestBody UserVo userVo) {
+        try {
+            return ResponseMode.buildSuccessResponse(kUserService.login(userVo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseMode.buildErrorResponse(e.getMessage());
+        }
+    }
+    @RequestMapping("register.do")
+    public ResponseMode<Boolean> register(@RequestBody RegisterVo registerVo){
+        try {
+            return ResponseMode.buildSuccessResponse(kUserService.register(registerVo));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseMode.buildErrorResponse(e.getMessage());
+        }
+    }
+
+    @RequestMapping("updatePassWork.do")
+    public ResponseMode<Boolean> updatePassWork(@RequestBody KUser kUser){
+        try {
+            return ResponseMode.buildSuccessResponse(kUserService.updatePassWork(kUser));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseMode.buildErrorResponse(e.getMessage());
+        }
+    }
 
 }

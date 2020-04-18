@@ -89,11 +89,11 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密 &nbsp;&nbsp;码</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" placeholder="请输入密码" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="password" name="password"    placeholder="请输入密码" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
             <!-- <div class="layui-form-mid layui-word-aux">辅助文字</div> -->
         </div>
-
+    <input type="hidden">
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="formDemo">登陆</button>
@@ -111,7 +111,7 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             let field = data.field;
-            $.post(baseUrl + "user/login.do",{"account":field.account,"password":field.password},function (result) {
+            $.post(baseUrl + "user/login.do",{"type":"1","account":field.account,"password":field.password},function (result) {
                 console.log(result)
                 if (result.data.success == false) {
                     layer.msg(result.data.message);

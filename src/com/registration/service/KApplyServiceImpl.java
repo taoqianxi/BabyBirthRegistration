@@ -18,4 +18,14 @@ public class KApplyServiceImpl implements KApplyService{
     public PageMode<List<KApply>> selectKapply(ApplyVo applyVo) throws Exception {
         return new PageMode<>(kApplyDao.listKapply(applyVo),kApplyDao.listKapplyCount(applyVo));
     }
+
+    @Override
+    public Boolean auditStatus(ApplyVo applyVo) throws Exception {
+        return kApplyDao.auditStatus(applyVo);
+    }
+
+    @Override
+    public Boolean insertApply(KApply kApply) throws Exception {
+        return kApplyDao.insertApply(kApply);
+    }
 }
